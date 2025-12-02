@@ -1,13 +1,11 @@
 package plasSB.controller;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import plasSB.dto.AssignmentRequestDTO;
 import plasSB.entity.RecyclingPlant;
 import plasSB.service.RecyclingPlantService;
-import java.time.LocalDate;
-import java.util.List;
 
 
 @RestController
@@ -20,56 +18,26 @@ public class RecyclingPlantController {
         this.recyclingPlantService = recyclingPlantService;
     }
     
-    // Obtener capacidad para fecha específica
-    @GetMapping("/capacity")
-    public RecyclingPlant getCapacityForDate(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        
-        return recyclingPlantService.getCapacityForDate(date);
-    }
     
-    // Obtener capacidad actual (hoy)
+    // GET capacidad actual
     @GetMapping("/capacity/current")
-    public RecyclingPlant getCurrentCapacity() {
-        return recyclingPlantService.getCapacityForDate(LocalDate.now());
+    public float getCurrentCapacity(@RequestParam String plant_name) {
+        return recyclingPlantService.getCapacity(plant_name);
     }
     
-    // Recibir asignación - AÑADIR capacidad
-    @PostMapping("/assignments")
-    public String receiveAssignment(@RequestBody AssignmentRequestDTO assignment) {
-        float capacityToAdd = assignment.getPackageCount() * 0.1f; // Calcular peso
-        RecyclingPlant updatedPlant = recyclingPlantService.addCapacity(capacityToAdd);
-        
-        return String.format(
-            "Assignment received: %d dumpsters, %d packages (%.2f tons) assigned by %s. New capacity: %.2f/%.2f tons",
-            assignment.getDumpsterCount(), 
-            assignment.getPackageCount(),
-            capacityToAdd,
-            assignment.getAssignedBy(),
-            updatedPlant.getCurrent_capacity(),
-            updatedPlant.getTotal_capacity()
-        );
-    }
-    
-    // Endpoint para RESTAR capacidad (cuando se procesa material)
-    @PostMapping("/process")
-    public String processMaterial(@RequestParam float amount) {
-        RecyclingPlant updatedPlant = recyclingPlantService.subtractCapacity(amount);
-        
-        return String.format(
-            "Processed %.2f tons. New capacity: %.2f/%.2f tons",
-            amount,
-            updatedPlant.getCurrent_capacity(),
-            updatedPlant.getTotal_capacity()
-        );
-    }
-    
-    // Endpoint para ACTUALIZAR capacidad manualmente
-    @PutMapping("/capacity")
-    public RecyclingPlant updateCapacity(@RequestParam float newCapacity) {
-        RecyclingPlant current = recyclingPlantService.getCapacityForDate(LocalDate.now());
-        current.setCurrent_capacity(newCapacity);
-        return recyclingPlantService.updateCapacity(current); 
+    //PUT capacidad nueva
+    @PutMapping("/capacity/current")
+    public ResponseEntity<?> updateCapacity(
+            @RequestParam String plant_name,
+            @RequestParam float amount) {
+        try {
+            RecyclingPlant updated = recyclingPlantService.updateCapacity(plant_name, amount);
+            return ResponseEntity.ok(updated);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
     
     @GetMapping("/health")
