@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import plasSB.dto.NotificationDTO;
 import plasSB.entity.RecyclingPlant;
 import plasSB.service.RecyclingPlantService;
 
@@ -29,8 +30,9 @@ public class RecyclingPlantController {
     @PutMapping("/capacity/current")
     public ResponseEntity<?> updateCapacity(
             @RequestParam String plant_name,
-            @RequestParam float amount) {
+            @RequestParam NotificationDTO notification) {
         try {
+        	float amount = notification.getTons();
             RecyclingPlant updated = recyclingPlantService.updateCapacity(plant_name, amount);
             return ResponseEntity.ok(updated);
         } catch (IllegalArgumentException e) {
