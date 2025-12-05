@@ -42,6 +42,26 @@ public class RecyclingPlantController {
         }
     }
     
+    // POST allocation notification
+    @PostMapping("/allocation")
+    public ResponseEntity<?> allocateResources(
+            @RequestParam String plant_name,
+            @RequestBody NotificationDTO notification) {
+        try {
+        	float amount= notification.getTons();
+        	recyclingPlantService.updateCapacity(plant_name, amount);
+//            recyclingPlantService.receiveNotification(
+//                plant_name,
+//                notification.getDumpsters(),
+//                notification.getPackages(),
+//                notification.getTons()
+//            );
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    
     @GetMapping("/health")
     public String healthCheck() {
         return "PlasSB Server is running!";

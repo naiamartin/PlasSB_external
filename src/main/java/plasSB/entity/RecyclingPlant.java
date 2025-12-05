@@ -17,7 +17,16 @@ public class RecyclingPlant {
     private float totalCapacity;  
     
     @Column(name = "current_capacity", nullable = false)
-    private float currentCapacity;  
+    private float currentCapacity; 
+    
+    @Column(name = "allocated_dumpsters", nullable = false)
+    private int allocatedDumpsters;
+    
+    @Column(name = "allocated_packages", nullable = false)
+    private int allocatedPackages;
+    
+    @Column(name = "allocated_tons", nullable = false)
+    private float allocatedTons;
     
     public RecyclingPlant() {}
     
@@ -26,6 +35,19 @@ public class RecyclingPlant {
 		this.plantName = plantName;
 		this.totalCapacity = totalCapacity;
 		this.currentCapacity = currentCapacity;
+	}
+    
+    
+
+	public RecyclingPlant(String plantName, float totalCapacity, float currentCapacity, int allocatedDumpsters,
+			int allocatedPackages, float allocatedTons) {
+		super();
+		this.plantName = plantName;
+		this.totalCapacity = totalCapacity;
+		this.currentCapacity = currentCapacity;
+		this.allocatedDumpsters = allocatedDumpsters;
+		this.allocatedPackages = allocatedPackages;
+		this.allocatedTons = allocatedTons;
 	}
 
 	// Getters y Setters
@@ -53,10 +75,37 @@ public class RecyclingPlant {
 	public void setCurrentCapacity(float currentCapacity) {
 		this.currentCapacity = currentCapacity;
 	}
+	
+	
+
+	public int getAllocatedDumpsters() {
+		return allocatedDumpsters;
+	}
+
+	public void setAllocatedDumpsters(int allocatedDumpsters) {
+		this.allocatedDumpsters = allocatedDumpsters;
+	}
+
+	public int getAllocatedPackages() {
+		return allocatedPackages;
+	}
+
+	public void setAllocatedPackages(int allocatedPackages) {
+		this.allocatedPackages = allocatedPackages;
+	}
+
+	public float getAllocatedTons() {
+		return allocatedTons;
+	}
+
+	public void setAllocatedTons(float allocatedTons) {
+		this.allocatedTons = allocatedTons;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(currentCapacity, plantName, totalCapacity);
+		return Objects.hash(allocatedDumpsters, allocatedPackages, allocatedTons, currentCapacity, plantName,
+				totalCapacity);
 	}
 
 	@Override
@@ -68,7 +117,9 @@ public class RecyclingPlant {
 		if (getClass() != obj.getClass())
 			return false;
 		RecyclingPlant other = (RecyclingPlant) obj;
-		return Float.floatToIntBits(currentCapacity) == Float.floatToIntBits(other.currentCapacity)
+		return allocatedDumpsters == other.allocatedDumpsters && allocatedPackages == other.allocatedPackages
+				&& Float.floatToIntBits(allocatedTons) == Float.floatToIntBits(other.allocatedTons)
+				&& Float.floatToIntBits(currentCapacity) == Float.floatToIntBits(other.currentCapacity)
 				&& Objects.equals(plantName, other.plantName)
 				&& Float.floatToIntBits(totalCapacity) == Float.floatToIntBits(other.totalCapacity);
 	}
