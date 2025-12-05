@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import plasSB.dto.NotificationDTO;
 import plasSB.entity.RecyclingPlant;
 import plasSB.service.RecyclingPlantService;
 
@@ -35,6 +36,24 @@ public class RecyclingPlantController {
             return ResponseEntity.ok(updated);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    
+    // POST allocation notification
+    @PostMapping("/allocation")
+    public ResponseEntity<?> allocateResources(
+            @RequestParam String plant_name,
+            @RequestBody NotificationDTO notification) {
+        try {
+            recyclingPlantService.receiveNotification(
+                plant_name,
+                notification.getDumpsters(),
+                notification.getPackages(),
+                notification.getTons()
+            );
+            return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
