@@ -28,6 +28,7 @@ public class RecyclingPlantService {
         }
         
         rp.setCurrentCapacity(newCapacity);
+        
         return plantRepository.save(rp);
 	}
 
@@ -57,6 +58,7 @@ public class RecyclingPlantService {
 		}
 		
 		rp.setCurrentCapacity(newCapacity);
+		System.out.println("Updated capacity for plant " + plant_name + ": " + newCapacity);
 		plantRepository.save(rp);
 	}
 	
