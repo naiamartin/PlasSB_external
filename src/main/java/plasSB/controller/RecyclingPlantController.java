@@ -25,27 +25,12 @@ public class RecyclingPlantController {
     public float getCurrentCapacity(@RequestParam("plant_name") String plant_name) {
         return recyclingPlantService.getCapacity(plant_name);
     }
-    
-    //PUT capacidad nueva
-    @PutMapping("/capacity/current")
-    public ResponseEntity<?> updateCapacity(
-            @RequestParam String plant_name,
-            @RequestParam NotificationDTO notification) {
-        try {
-        	float amount = notification.getTons();
-            RecyclingPlant updated = recyclingPlantService.updateCapacity(plant_name, amount);
-            return ResponseEntity.ok(updated);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
+
     
     // POST allocation notification
     @PostMapping("/allocation")
     public ResponseEntity<?> allocateResources(
-            @RequestParam String plant_name,
+    		@RequestParam("plant_name") String plant_name,
             @RequestBody NotificationDTO notification) {
         try {
             recyclingPlantService.receiveNotification(

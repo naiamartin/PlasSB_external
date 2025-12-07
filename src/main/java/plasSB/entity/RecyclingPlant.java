@@ -25,8 +25,6 @@ public class RecyclingPlant {
     @Column(name = "allocated_packages", nullable = false)
     private int allocatedPackages;
     
-    @Column(name = "allocated_tons", nullable = false)
-    private float allocatedTons;
     
     public RecyclingPlant() {}
     
@@ -40,14 +38,13 @@ public class RecyclingPlant {
     
 
 	public RecyclingPlant(String plantName, float totalCapacity, float currentCapacity, int allocatedDumpsters,
-			int allocatedPackages, float allocatedTons) {
+			int allocatedPackages) {
 		super();
 		this.plantName = plantName;
 		this.totalCapacity = totalCapacity;
 		this.currentCapacity = currentCapacity;
 		this.allocatedDumpsters = allocatedDumpsters;
 		this.allocatedPackages = allocatedPackages;
-		this.allocatedTons = allocatedTons;
 	}
 
 	// Getters y Setters
@@ -94,17 +91,9 @@ public class RecyclingPlant {
 		this.allocatedPackages = allocatedPackages;
 	}
 
-	public float getAllocatedTons() {
-		return allocatedTons;
-	}
-
-	public void setAllocatedTons(float allocatedTons) {
-		this.allocatedTons = allocatedTons;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(allocatedDumpsters, allocatedPackages, allocatedTons, currentCapacity, plantName,
+		return Objects.hash(allocatedDumpsters, allocatedPackages, currentCapacity, plantName,
 				totalCapacity);
 	}
 
@@ -118,7 +107,6 @@ public class RecyclingPlant {
 			return false;
 		RecyclingPlant other = (RecyclingPlant) obj;
 		return allocatedDumpsters == other.allocatedDumpsters && allocatedPackages == other.allocatedPackages
-				&& Float.floatToIntBits(allocatedTons) == Float.floatToIntBits(other.allocatedTons)
 				&& Float.floatToIntBits(currentCapacity) == Float.floatToIntBits(other.currentCapacity)
 				&& Objects.equals(plantName, other.plantName)
 				&& Float.floatToIntBits(totalCapacity) == Float.floatToIntBits(other.totalCapacity);

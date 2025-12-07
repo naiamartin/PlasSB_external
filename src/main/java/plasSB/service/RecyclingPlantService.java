@@ -15,22 +15,6 @@ public class RecyclingPlantService {
 	    this.plantRepository = plantRepository;
 	}
 
-	public RecyclingPlant updateCapacity(String plant_name, float amount) {
-		RecyclingPlant rp = plantRepository.findByPlantName(plant_name);
-        if (rp == null) {
-            throw new RuntimeException("Plant not found: " + plant_name);
-        }
-        
-        float newCapacity = rp.getCurrentCapacity() - amount;
-        if (newCapacity < 0) {
-            throw new IllegalArgumentException("Insufficient capacity. Available: " 
-                + rp.getCurrentCapacity() + ", Required: " + amount);
-        }
-        
-        rp.setCurrentCapacity(newCapacity);
-        
-        return plantRepository.save(rp);
-	}
 
 	public float getCapacity(String plant_name) {
 		RecyclingPlant rp = plantRepository.findByPlantName(plant_name);
@@ -49,7 +33,7 @@ public class RecyclingPlantService {
 		
 		rp.setAllocatedDumpsters(rp.getAllocatedDumpsters() + dumpsters);
 		rp.setAllocatedPackages(rp.getAllocatedPackages() + packages);
-		rp.setAllocatedTons(rp.getAllocatedTons() + tons);
+		rp.setCurrentCapacity(rp.getCurrentCapacity()-tons);
 		
 		float newCapacity = rp.getCurrentCapacity() - tons;
 		if (newCapacity < 0) {
