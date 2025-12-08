@@ -29,7 +29,7 @@ public class RecyclingPlantController {
     
     // POST allocation notification
     @PostMapping("/allocation")
-    public ResponseEntity<?> allocateResources(
+    public ResponseEntity<?> recieveAllocation(
     		@RequestParam("plant_name") String plant_name,
             @RequestBody NotificationDTO notification) {
         try {
