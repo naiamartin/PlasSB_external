@@ -27,7 +27,7 @@ public class PlasSbApplication {
                 plant.setTotalCapacity(10000.0f);  
                 plant.setCurrentCapacity(7500.0f);  
                 repository.save(plant);
-                System.out.println(" PlasSB plant initialized with capacity: 10000.0");
+                System.out.println(" PlasSB plant initialized with total capacity: 10000.0");
             } else {
                 System.out.println(" PlasSB plant already exists. Current capacity: " 
                     + repository.findByPlantName("PlasSB").getCurrentCapacity());
