@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import plasSB.dto.NotificationDTO;
-import plasSB.entity.RecyclingPlant;
 import plasSB.service.RecyclingPlantService;
 
 
