@@ -38,6 +38,11 @@ public class RecyclingPlantController {
                 notification.getPackages(),
                 notification.getTons()
             );
+            System.out.println("Notification received at PlasSB for plant: " + plant_name +
+				"Dumpsters: " + notification.getDumpsters() + ", " +
+				"Packages: " + notification.getPackages() + ", " +
+				"Tons: " + notification.getTons());
+            System.out.println("Updated capacity: " + recyclingPlantService.getCapacity(plant_name));
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
